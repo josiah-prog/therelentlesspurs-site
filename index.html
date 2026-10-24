@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="jo johnson. the relentless pursuit. writing, the newsletter, and the book.">
+<meta name="description" content="jo johnson. the relentless pursuit.">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
@@ -11,399 +11,388 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Great+Vibes&family=Space+Mono:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,500;0,700;0,800;1,500&display=swap">
 <style>
-/* layout: a fashion-book in one scroll. cream pages, everything centered on one axis, huge serif set against a signature script, one red dot as the only color. sections breathe like spreads. */
+/* layout: a poster. one fixed red screen, black grotesque type in poster hierarchy, a menu icon top right; each page reuses the same frame. */
 :root{
-  --bone:#e6dac2;      /* page */
-  --bone-2:#ded2bb;    /* deeper page for alternating spreads */
-  --ink:#2a2520;       /* type */
-  --ink-2:#534d44;     /* body copy */
-  --mute:#847c6e;      /* credits, captions */
-  --hair:#bdb29e;      /* hairlines */
-  --red:#9e1b10;       /* the dot */
-  --f-serif:"DM Serif Display",Didot,"Bodoni 72","Bodoni MT",Georgia,serif;
-  --f-script:"Great Vibes","Snell Roundhand","Apple Chancery",cursive;
-  --f-ui:"Space Mono","Courier New",monospace;
+  /* white page, red type (tokens kept by role: --red = the ground, --ink = the type) */
+  --red:#faf7f2;
+  --ink:#e8170f;
+  --ink-soft:rgba(232,23,15,.65);
+  --line:rgba(232,23,15,.9);
+  --f:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+  color-scheme:light;
 }
 *{box-sizing:border-box}
-html{background:var(--bone)}
-body{background:var(--bone);color:var(--ink);font-family:var(--f-serif);font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+html,body{height:100%}
+body{background:var(--red);color:var(--ink);font-family:var(--f);margin:0;overflow:hidden;-webkit-font-smoothing:antialiased}
 a{color:inherit}
-:focus-visible{outline:1.5px solid var(--red);outline-offset:4px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 
-/* soft paper grain */
-body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:40;opacity:.35;mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .45  0 0 0 0 .38  0 0 0 0 .28  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+/* frame */
+.top{position:fixed;left:0;right:0;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;
+  padding:calc(20px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) 20px max(22px,env(safe-area-inset-left,0px))}
+.mark{font-weight:800;font-size:14px;letter-spacing:-.01em;text-transform:lowercase;text-decoration:none;line-height:1;opacity:0;transform-origin:0 50%;transition:opacity .3s,transform .3s cubic-bezier(.2,.75,.15,1)}
+.mark:hover,.mark:focus-visible{transform:scale(1.35)}
+.left{position:relative;display:flex;align-items:center}
+/* the home dot stretches into a bar the width of the logo, then the logo writes itself out of it */
+.hdot{position:absolute;left:0;top:50%;width:24px;height:24px;margin-top:-12px;border-radius:999px;background:var(--ink);opacity:0;transform:scale(.4);pointer-events:none;
+  transition:opacity .2s ease,transform .45s cubic-bezier(.3,1.5,.5,1),width .45s cubic-bezier(.7,0,.2,1) .12s,height .45s cubic-bezier(.7,0,.2,1) .12s,margin .45s cubic-bezier(.7,0,.2,1) .12s}
+body.home:not(.menu-open) .hdot{opacity:1;transform:none}
+body.home.menu-open .hdot{opacity:0;transform:none;width:calc(var(--mw,190px) + 12px);height:22px;margin:-11px 0 0 -6px;
+  transition:width .42s cubic-bezier(.7,0,.2,1),height .42s cubic-bezier(.7,0,.2,1),margin .42s cubic-bezier(.7,0,.2,1),opacity .3s ease .42s}
+body.home .mark{clip-path:inset(-30% 100% -30% 0)}
+body.home.menu-open .mark{clip-path:inset(-30% -30% -30% 0);transition:clip-path .45s cubic-bezier(.6,0,.2,1) .36s,transform .3s cubic-bezier(.2,.75,.15,1),opacity 0s .36s}
+.hdot{border:0;padding:0;cursor:pointer}
+body.home:not(.menu-open) .hdot{pointer-events:auto}
+body.home:not(.menu-open) .hdot:hover,body.socials-open .hdot{transform:scale(1.3)}
+.sdrop{position:absolute;left:0;top:38px;display:flex;flex-direction:column;gap:14px}
+.sdrop a{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-weight:700;font-size:15px;letter-spacing:-.005em;
+  opacity:0;transform:translateY(-10px);pointer-events:none;transition:opacity .25s ease,transform .35s cubic-bezier(.2,.75,.15,1)}
+.sdrop svg{width:18px;height:18px;fill:currentColor;flex:none}
+.sdrop svg.stroke{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;width:20px;height:20px;margin-left:-1px}
+.sdrop a:hover span{text-decoration:underline;text-underline-offset:3px}
+body.socials-open .sdrop a{opacity:1;transform:none;pointer-events:auto}
+body.socials-open .sdrop a:nth-child(2){transition-delay:.05s}body.socials-open .sdrop a:nth-child(3){transition-delay:.1s}body.socials-open .sdrop a:nth-child(4){transition-delay:.15s}
 
-.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.cap{font-family:var(--f-ui);font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--mute)}
-.dot{display:block;width:16px;height:16px;border-radius:50%;background:var(--red);margin:0 auto}
-.dot.sm{width:10px;height:10px}
-.center{text-align:center}
+@media (prefers-reduced-motion:reduce){.hdot,body.home.menu-open .hdot,body.home.menu-open .mark{transition:opacity .2s}body.home .mark{clip-path:none}}
+body:not(.home) .mark{opacity:1}
+.burger{width:44px;height:44px;margin-right:-10px;border:0;background:none;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+.burger{transition:transform .3s cubic-bezier(.2,.75,.15,1)}
+.burger:hover,.burger:focus-visible{transform:scale(1.25)}
+.burger i{display:block;width:22px;height:2px;background:currentColor;position:relative;transition:transform .3s,background .3s}
+.burger i::before,.burger i::after{content:"";position:absolute;left:0;width:22px;height:2px;background:currentColor;transition:transform .3s,top .3s}
+.burger i::before{top:-7px}.burger i::after{top:7px}
+.menu-open .burger i{background:transparent}
+.menu-open .burger i::before{top:0;transform:rotate(45deg)}
+.menu-open .burger i::after{top:0;transform:rotate(-45deg)}
 
-/* nav */
-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bone) 92%,transparent);backdrop-filter:blur(6px)}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bone)}
-nav .wrap{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px;padding-block:18px}
-nav .l,nav .r{display:flex;gap:clamp(14px,2.6vw,30px)}
-nav .r{justify-content:flex-end}
-nav a{text-decoration:none}
-nav .l a,nav .r a{font-family:var(--f-ui);font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
-nav .l a:hover,nav .r a:hover{color:var(--red)}
-nav .name{font-family:var(--f-serif);font-style:italic;font-size:19px;white-space:nowrap;transition:opacity .3s}
-nav .wrap{position:relative}
-.navdot{position:absolute;left:50%;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--red);opacity:0;transform:translateY(40px) scale(1.6);transition:opacity .35s,transform .6s cubic-bezier(.3,1.35,.5,1);pointer-events:none}
-nav.dotted .navdot{opacity:1;transform:none;pointer-events:auto}
-nav.dotted .name{opacity:0;pointer-events:none}
-@media (prefers-reduced-motion:reduce){.navdot{transition:opacity .2s;transform:none}}
-@media (max-width:620px){nav .wrap{grid-template-columns:1fr auto}nav .l{display:none}nav .name{justify-self:start}}
+.view{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;
+  padding:calc(84px + env(safe-area-inset-top,0px)) max(22px,env(safe-area-inset-right,0px)) calc(76px + env(safe-area-inset-bottom,0px)) max(22px,env(safe-area-inset-left,0px));
+  opacity:0;visibility:hidden;transition:opacity .4s ease,visibility 0s linear .4s;overflow-y:auto}
+.view.on{opacity:1;visibility:visible;transition:opacity .4s ease}
+.inner{width:100%;max-width:820px;margin:auto 0}
 
-/* hero */
-.hero{padding-block:clamp(40px,7vw,80px) clamp(40px,6vw,70px);overflow:hidden}
-.huge{font-family:var(--f-serif);font-weight:900;text-transform:lowercase;letter-spacing:-.035em;line-height:.84;font-size:clamp(58px,13.4vw,172px);margin:0;text-align:center;text-wrap:balance}
-.script{font-family:var(--f-script);font-weight:400;font-size:clamp(66px,11vw,150px);line-height:.9;text-align:center;margin:-.1em 0 0;color:var(--ink)}
-.hero .dot{margin-top:clamp(18px,3vw,34px)}
-.hero .line{font-style:normal;letter-spacing:.02em;font-size:clamp(17px,1.9vw,23px);line-height:1.45;max-width:none;margin:clamp(20px,3vw,32px) auto 0;text-align:center;color:var(--ink-2);text-wrap:balance}
-.hero .line .br-m{display:none}
-@media (max-width:620px){.hero .line{font-size:4.05vw;white-space:nowrap}.hero .line .br-d{display:none}.hero .line .br-m{display:inline}}
-.socials{position:static;z-index:auto;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;display:flex;justify-content:center;flex-wrap:wrap;gap:12px;margin-top:clamp(24px,3.4vw,36px)}
-.socials a{width:38px;height:38px;border-radius:50%;border:1px solid var(--ink);display:grid;place-items:center;color:var(--ink);transition:background .2s,color .2s,border-color .2s}
-.socials svg{width:15px;height:15px;fill:currentColor}
-.socials svg.ico-stroke{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round}
-.socials a:hover,.socials a:focus-visible{background:var(--red);border-color:var(--red);color:var(--bone)}
-.credits{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin-top:clamp(40px,6vw,72px)}
-.bars{display:flex;gap:2px;align-items:flex-end;height:22px}
-.bars i{display:block;width:1.5px;height:100%;background:var(--ink)}
-.bars i:nth-child(3n){width:3px}.bars i:nth-child(4n){height:78%}.bars i:nth-child(7n){width:4px}
-@media (max-width:520px){.credits .bars{display:none}}
-
-/* spreads */
-.spread{padding-block:clamp(72px,11vw,140px);border-top:1px solid var(--hair)}
-.spread.alt{background:var(--bone-2)}
-.kicker{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:clamp(28px,4vw,48px)}
-.h2{font-family:var(--f-serif);font-weight:900;text-transform:lowercase;letter-spacing:-.03em;line-height:.9;font-size:clamp(46px,7.6vw,104px);margin:0;text-align:center;text-wrap:balance}
-.h2 .s{font-family:var(--f-script);font-weight:400;letter-spacing:0;font-size:1.1em;display:block;margin-top:-.08em}
-
-/* manifesto */
-.manifesto ol{list-style:none;margin:0 auto;padding:0;max-width:760px;text-align:center}
-.manifesto li{font-family:var(--f-serif);font-size:clamp(26px,3.6vw,44px);line-height:1.18;padding-block:.14em;text-transform:lowercase}
-.manifesto li:nth-child(odd){font-style:italic;font-weight:400}
-.manifesto li:nth-child(even){font-weight:700;letter-spacing:-.015em}
-.manifesto li.end{font-family:var(--f-script);font-style:normal;font-weight:400;font-size:clamp(44px,6.4vw,82px);margin-top:.25em}
-
-/* about */
-.about .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,90px);max-width:980px;margin:0 auto;align-items:start}
-.about .lead{font-size:clamp(24px,2.8vw,34px);line-height:1.3;font-style:italic;margin:0;text-wrap:pretty}
-.about .body p{margin:0 0 1.1em;color:var(--ink-2);max-width:52ch}
-.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--ink);margin-top:28px}
-.stats div{padding:16px 0 0}
-.stats b{display:block;font-weight:900;font-size:clamp(30px,3.6vw,44px);line-height:1;letter-spacing:-.02em;font-variant-numeric:lining-nums tabular-nums}
-.stats span{display:block;margin-top:6px}
-@media (max-width:760px){.about .cols{grid-template-columns:1fr}}
-/* about: one voice, one face */
-.about .lead,.about .body p,.about .cap,.about .stats b{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:0;text-transform:none}
-.about .lead,.about .body p{font-size:clamp(20px,2.1vw,26px);line-height:1.5;color:var(--ink)}
-.about .cap{font-size:clamp(17px,1.6vw,19px);color:var(--mute)}
-.about .stats b{font-size:clamp(34px,4vw,48px)}
-.about .cols{grid-template-columns:1fr;gap:1em;max-width:700px;text-align:center}
-.about .body p+p{margin-top:1em}
-.about .body p{max-width:none;margin:0}
-.about .stats{margin-top:clamp(28px,4vw,44px)}
-
-/* lines: each one its own centered moment */
-.lines .entry{max-width:880px;margin:0 auto;text-align:center;padding-block:clamp(40px,6vw,72px);border-bottom:1px solid var(--hair)}
-.lines .entry:last-of-type{border-bottom:0}
-.lines .entry .cap{display:block;margin-bottom:18px}
-.lines .kicker{margin-bottom:0}
-.lines .entry:first-of-type{padding-top:clamp(20px,3vw,36px)}
-.lines q{quotes:none;display:block;text-transform:lowercase;text-wrap:balance}
-.l-huge q{font-weight:900;letter-spacing:-.03em;line-height:.95;font-size:clamp(36px,5.4vw,70px)}
-.l-ital q{font-style:italic;font-size:clamp(24px,2.8vw,34px);line-height:1.35;max-width:34ch;margin:0 auto}
-.l-feature q{max-width:40ch}
-.l-script q{font-family:var(--f-script);font-size:clamp(46px,6.6vw,86px);line-height:1.05}
-.lines .l-stack q{text-transform:uppercase}
-.l-stack q span{display:block;font-weight:900;letter-spacing:-.01em;font-size:clamp(26px,3.4vw,44px);line-height:1.12}
-.l-stack q span+span{margin-top:1.12em}
-.l-litany q span{display:block;font-style:italic;font-size:clamp(22px,2.6vw,32px);line-height:1.5}
-.l-body q{font-size:clamp(18px,1.7vw,21px);line-height:1.7;max-width:52ch;margin:0 auto;color:var(--ink-2)}
-.l-body q .first{font-weight:900;font-size:2.2em;line-height:1;display:block;color:var(--ink);letter-spacing:-.02em;margin-bottom:.3em}
-.more{display:flex;justify-content:center;margin-top:clamp(28px,4vw,44px)}
-
-/* buttons / links */
-.btn{font-family:var(--f-ui);font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:12px;padding:16px 26px;border:1px solid var(--ink);transition:background .2s,color .2s}
-.btn:hover{background:var(--ink);color:var(--bone)}
-.btn.fill{background:var(--ink);color:var(--bone)}
-.btn.fill:hover{background:var(--red);border-color:var(--red)}
-
-/* book */
-.book .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(36px,7vw,100px);align-items:center;max-width:1000px;margin:0 auto}
-.cover{aspect-ratio:4/5;width:min(400px,100%);max-width:100%;justify-self:center;background:#f6f1e7;box-shadow:0 2px 0 var(--hair),0 40px 70px -34px rgba(40,28,10,.55);padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;justify-content:space-between;text-align:center}
-.cover .t{font-weight:900;text-transform:lowercase;letter-spacing:-.035em;line-height:.86;font-size:clamp(40px,5vw,62px)}
-.cover .t .s{font-family:var(--f-script);font-weight:400;letter-spacing:0;display:block;font-size:1.15em;margin-top:-.04em}
-.cover .foot{display:flex;justify-content:space-between;align-items:center}
-.book .text{max-width:44ch}
-.book .text .h2{text-align:left;font-size:clamp(42px,5.6vw,76px)}
-.book .text p{color:var(--ink-2);margin:14px 0 0}
-.book .text{align-self:center}
-.book .status{margin-top:28px;display:flex;align-items:center;gap:12px}
-.book .status .dot{margin:0}
-@media (max-width:760px){.book .cols{grid-template-columns:1fr}.book .text .h2{text-align:center}.book .text{margin:0 auto;text-align:center}.book .status{justify-content:center}}
-
-.soon{margin-top:26px;font-family:var(--f-serif);font-weight:900;text-transform:uppercase;letter-spacing:.01em;line-height:.95;font-size:clamp(40px,5.6vw,72px);color:var(--red)}
-.cover{position:relative}
-.cover .t{filter:blur(9px);opacity:.75;user-select:none}
-.stamp{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-family:var(--f-ui);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink-2)}
-
-/* newsletter */
-.letter .intro{max-width:46ch;margin:0 auto;text-align:center;font-style:italic;font-size:clamp(20px,2.2vw,26px);line-height:1.4;color:var(--ink-2)}
-.tiers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));max-width:1000px;margin:clamp(40px,6vw,64px) auto 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
-.tier{padding:26px 22px 28px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;min-width:0}
-.tier+.tier{border-left:1px solid var(--hair)}
-.tier .p{font-weight:900;font-size:clamp(40px,4.4vw,56px);line-height:1;letter-spacing:-.02em;font-variant-numeric:lining-nums}
-.tier .p small{font-family:var(--f-ui);font-weight:500;font-size:12px;letter-spacing:.12em;margin-left:3px;vertical-align:.9em}
-.tier .n{font-style:italic;font-size:20px}
-.tier .d{font-size:15px;color:var(--ink-2);line-height:1.5;max-width:22ch}
-.tier.top .n{font-family:var(--f-script);font-style:normal;font-size:30px;line-height:1}
-.tier.top .p{color:var(--red)}
-@media (max-width:860px){.tiers{grid-template-columns:repeat(2,minmax(0,1fr))}.tier:nth-child(3){border-left:0}.tier:nth-child(n+3){border-top:1px solid var(--hair)}}
-@media (max-width:440px){.tiers{grid-template-columns:1fr}.tier+.tier{border-left:0;border-top:1px solid var(--hair)}}
-.letter .more{margin-top:40px}
-.letter .h2 .s{margin-top:.22em;line-height:1.1}
-
-/* work */
-.work .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(32px,6vw,90px);max-width:980px;margin:0 auto}
-.work .lead{font-size:clamp(24px,2.8vw,34px);line-height:1.3;font-style:italic;margin:0 0 20px}
-.work p{color:var(--ink-2);max-width:50ch;margin:0 0 1em}
-.offers{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink)}
-.offers li{padding:20px 0;border-bottom:1px solid var(--hair)}
-.offers b{display:block;font-size:22px;font-weight:700;text-transform:lowercase;letter-spacing:-.01em}
-.offers span{color:var(--ink-2);font-size:16px}
-@media (max-width:760px){.work .cols{grid-template-columns:1fr}}
-.work .h2 .s{margin-top:.22em;line-height:1.1}
-/* 1:1: one voice, one face */
-.work .lead,.work p,.work .cap,.reach .addr{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:0;text-transform:none;font-size:clamp(20px,2.1vw,26px);line-height:1.5;color:var(--ink);margin:0}
-.work .lead+p{margin-top:1em}
-.work .kicker .cap{color:var(--mute)}
-.reach{display:flex;flex-direction:column;gap:14px;align-items:flex-start;border-top:1px solid var(--ink);padding-top:20px}
-.reach .addr{font-style:italic;font-size:clamp(20px,2.2vw,26px);margin:0}
-.reach .addr a{text-decoration:none;border-bottom:1px solid var(--hair)}
-.reach .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
-.reach button.btn{background:none;color:var(--ink);cursor:pointer}
-.reach button.btn:hover{background:var(--ink);color:var(--bone)}
-
-/* contact */
-.contact{text-align:center}
-.contact .addr{font-style:italic;font-size:clamp(24px,3.4vw,40px);margin:8px 0 0;color:var(--mute)}
-.contact .addr span{border-bottom:1px dashed var(--hair)}
-
-/* footer */
-footer{border-top:1px solid var(--hair);overflow:hidden}
-footer .wrap{padding-block:clamp(56px,8vw,96px) 28px}
-.sign{font-family:var(--f-script);font-size:clamp(70px,13vw,180px);line-height:.9;text-align:center;margin:0}
-.foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-top:clamp(36px,5vw,60px)}
-.foot a{text-decoration:none}
-.foot a:hover{color:var(--red)}
-
-@media (prefers-reduced-motion:no-preference){
-  .hero .huge,.hero .line{animation:in 1.1s cubic-bezier(.2,.7,.1,1) both}
-  .hero .line{animation-delay:2.1s}
-  /* 1. "pursuit" writes itself, then the dot drops in */
-  .hero .script{animation:write 1.7s cubic-bezier(.55,.1,.35,1) .45s both}
-  .hero .dot{animation:drop .7s cubic-bezier(.3,1.6,.5,1) 2s both}
-  /* 2. selected lines rise in as they reach the screen (JS adds .pending only to lines still below the fold) */
-  .lines .entry.pending{opacity:0;transform:translateY(28px)}
-  .lines .entry{transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.1,1)}
+/* home poster */
+.name{font-weight:700;font-size:clamp(14px,1.6vw,18px);letter-spacing:.02em;text-transform:lowercase;margin:0 0 clamp(14px,2.4vh,22px)}
+.big{font-weight:800;text-transform:lowercase;letter-spacing:-.035em;line-height:.9;font-size:clamp(48px,8.6vw,118px);margin:0}
+.sub{font-weight:700;text-transform:lowercase;letter-spacing:.005em;line-height:1.25;font-size:clamp(15px,2vw,24px);margin:clamp(28px,4.8vh,44px) 0 0}
+body:not(.home) .view{cursor:pointer}
+.to-mani{text-decoration:none;display:inline-block;transition:opacity .25s,transform .35s cubic-bezier(.2,.75,.15,1)}
+.to-mani:hover{opacity:.82;transform:scale(1.015)}
+.foot{display:flex;justify-content:center;gap:22px;margin-top:clamp(26px,4.6vh,40px);
 }
-@keyframes in{from{opacity:.25;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes write{from{clip-path:inset(-20% 100% -20% 0)}to{clip-path:inset(-20% -5% -20% 0)}}
-@keyframes drop{0%{opacity:0;transform:translateY(-26px) scale(.4)}100%{opacity:1;transform:none}}
-/* 6. red dot cursor (mouse and trackpad only) */
-#cursor{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--red);pointer-events:none;z-index:60;opacity:0;transition:width .25s,height .25s,margin .25s,opacity .25s,background .25s}
-#cursor.on{opacity:1}
-#cursor.big{width:44px;height:44px;margin:-22px 0 0 -22px;background:color-mix(in srgb,var(--red) 28%,transparent)}
-@media (hover:hover) and (pointer:fine){html.has-cursor,html.has-cursor a,html.has-cursor button{cursor:none}}
-/* page-by-page: every section (and every note) fills one screen and scrolling snaps to it */
-:root{--navh:60px}
-html{scroll-padding-top:var(--navh)}
-.hero,.spread,.lines .entry{min-height:calc(100svh - var(--navh));display:flex;flex-direction:column;justify-content:center;scroll-snap-align:start}
-.hero{padding-block:clamp(24px,4vw,48px)}
-.spread{padding-block:clamp(32px,5vw,64px)}
-.spread.lines{min-height:0;display:block;padding-block:0;scroll-snap-align:none}
-.lines .entry,.lines .entry:first-of-type{border-bottom:0;padding-block:clamp(32px,5vw,64px)}
-.note-label{display:block;margin-bottom:clamp(20px,3vw,36px)}
-.lines .entry .more{margin-top:clamp(28px,4vw,44px)}
-footer{scroll-snap-align:end}
+.foot a{width:22px;height:22px;display:grid;place-items:center;color:var(--ink);opacity:.9}
+.foot a:hover{opacity:1;transform:translateY(-1px)}
+.foot svg{width:18px;height:18px;fill:currentColor}
+.foot svg.stroke{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;width:20px;height:20px}
 
+/* menu */
+.menu{position:fixed;inset:0;z-index:15;background:var(--red);color:var(--ink);display:flex;align-items:center;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.menu-open .menu{opacity:1;visibility:visible;transition:opacity .35s ease}
+.menu-open .top{color:var(--ink)}
+.menu-open .burger{color:var(--ink)}
+.menu-open .mark{opacity:1!important}
+.menu>div{text-align:center}
+.menu ul{list-style:none;margin:0;padding:0;text-align:center}
+.menu a{display:block;font-weight:800;text-transform:lowercase;letter-spacing:-.03em;line-height:1;font-size:clamp(34px,6.4vw,68px);text-decoration:none;padding:.08em 0;transition:color .2s}
+.menu a{transition:color .2s,transform .3s cubic-bezier(.2,.75,.15,1)}
+.menu a:hover,.menu a:focus-visible{color:#111;transform:scale(1.12)}
+.menu small{display:block;margin-top:28px;font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:lowercase;color:var(--ink-soft)}
+
+/* pages */
+.h{font-weight:800;text-transform:lowercase;letter-spacing:-.035em;line-height:.9;font-size:clamp(48px,8vw,104px);margin:0 0 clamp(18px,3.4vh,30px)}
+.p{font-weight:500;font-size:clamp(17px,1.9vw,22px);line-height:1.42;margin:0 auto;max-width:38ch;text-wrap:pretty}
+.p+.p{margin-top:.9em}
+.btns{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:clamp(22px,4vh,34px)}
+.btn{font-family:var(--f);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:lowercase;text-decoration:none;padding:16px 26px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:background .2s,color .2s}
+.btn:hover,.btn:focus-visible{background:var(--ink);color:#fff}
+.small{font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:lowercase;margin-top:18px;opacity:.75}
+
+.note{min-height:40vh;display:flex;align-items:center;justify-content:center}
+.note q{quotes:none;display:block;text-wrap:balance}
+.note .big-q{font-weight:800;text-transform:lowercase;letter-spacing:-.03em;line-height:.95;font-size:clamp(34px,5.6vw,72px)}
+.note .long{font-weight:500;font-size:clamp(19px,2.4vw,27px);line-height:1.4;max-width:34ch;margin:0 auto}
+.note .stack span{display:block}
+.note .big-q.stack span+span{margin-top:.45em}
+.note .long.stack span{line-height:1.35}
+.note .long.stack span+span{margin-top:.55em}
+.note .tight span+span{margin-top:0!important}
+.note .long.dense{font-size:clamp(16px,1.75vw,20px);line-height:1.5;max-width:46ch}
+.pager{display:flex;justify-content:center;align-items:center;gap:18px;margin-top:clamp(24px,4.4vh,40px)}
+.pager button{border:0;background:none;color:var(--ink);font-family:var(--f);font-weight:700;font-size:15px;letter-spacing:.01em;cursor:pointer;padding:10px 4px}
+.pager .arrow{font-size:17px;transition:transform .25s}
+.pager #prev:hover{transform:translateX(-4px)}
+.pager #next2:hover{transform:translateX(4px)}
+.fade{animation:fade .45s ease both}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.mani{list-style:none;margin:0;padding:0}
+.mani li{font-weight:700;text-transform:lowercase;letter-spacing:-.015em;font-size:clamp(20px,3vw,36px);line-height:1.25}
+
+
+.cover{width:min(200px,46vw);aspect-ratio:4/5;margin:0 auto clamp(20px,3.6vh,30px);border:2px solid var(--ink);display:grid;place-items:center;position:relative}
+.cover b{font-weight:800;text-transform:lowercase;letter-spacing:-.03em;font-size:clamp(26px,5vw,34px);line-height:.92;filter:blur(6px)}
+
+/* cursor: small black dot (mouse only) */
+#cursor{position:fixed;left:0;top:0;width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--ink);pointer-events:none;z-index:60;opacity:0;transition:width .25s,height .25s,margin .25s,opacity .25s,background .25s}
+#cursor.on{opacity:1}
+#cursor.big{width:40px;height:40px;margin:-20px 0 0 -20px;background:rgba(232,23,15,.22)}
+
+@media (hover:hover) and (pointer:fine){html.has-cursor,html.has-cursor a,html.has-cursor button{cursor:none}}
+
+/* motion: home builds in on load, pages rise as they open, menu items cascade */
+@media (prefers-reduced-motion:no-preference){
+  .view .inner>*{transition:opacity .6s ease,transform .7s cubic-bezier(.2,.75,.15,1)}
+  .view:not(.on) .inner>*{opacity:0;transform:translateY(16px)}
+  .view.on .inner>*:nth-child(2){transition-delay:.08s}
+  .view.on .inner>*:nth-child(3){transition-delay:.16s}
+  .view.on .inner>*:nth-child(4){transition-delay:.24s}
+  .view.on .inner>*:nth-child(5){transition-delay:.32s}
+  .view.on .inner>*:nth-child(n+6){transition-delay:.4s}
+  .menu li{transition:opacity .45s ease,transform .55s cubic-bezier(.2,.75,.15,1)}
+  body:not(.menu-open) .menu li{opacity:0;transform:translateY(14px)}
+  .menu-open .menu li:nth-child(2){transition-delay:.05s}.menu-open .menu li:nth-child(3){transition-delay:.1s}
+  .menu-open .menu li:nth-child(4){transition-delay:.15s}.menu-open .menu li:nth-child(5){transition-delay:.2s}
+  .menu-open .menu li:nth-child(6){transition-delay:.25s}
+  .big{animation:rise 1s cubic-bezier(.2,.75,.15,1) both}
+  .foot a{transition:transform .2s}
+}
+@keyframes rise{from{letter-spacing:.02em;opacity:0}to{letter-spacing:-.035em;opacity:1}}
+@media (prefers-reduced-motion:reduce){.view,.view.on,.menu,.menu-open .menu{transition:none}.fade{animation:none}}
+/* phones: bigger tap areas without changing how anything looks */
+@media (pointer:coarse){
+  .mark{padding:14px 10px;margin:-14px -10px}
+  .hdot::before{content:"";position:absolute;inset:-14px;border-radius:50%}
+  .foot{gap:6px}
+  .foot a{width:44px;height:44px}
+  .pager button{min-width:44px;min-height:44px}
+  .sdrop{gap:4px}
+  .sdrop a{padding:8px 0}
+}/* phones turned sideways: short screens get tighter type so pages still fit */
+@media (max-height:520px){
+  .view{padding-top:calc(60px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px))}
+  .big{font-size:min(8.6vw,17vh)}
+  .h{font-size:min(8vw,13vh);margin-bottom:10px}
+  .p{font-size:min(1.9vw,3.6vh);line-height:1.35}
+  .p+.p{margin-top:.6em}
+  .note{min-height:0}
+  .note .big-q{font-size:min(5.6vw,9vh)}
+  .note .long{font-size:min(2.4vw,4.4vh)}
+  .note .long.dense{font-size:min(1.75vw,3.4vh);max-width:70ch}
+  .mani li{font-size:min(3vw,5.6vh);line-height:1.18}
+  .pager{margin-top:10px}
+  .btns{margin-top:12px}
+  .foot{margin-top:14px}
+  .menu a{font-size:min(6.4vw,11vh)}
+}
+@media (hover:none){.mark:hover,.burger:hover,.menu a:hover,.to-mani:hover,body.home:not(.socials-open) .hdot:hover{transform:none}.menu a:hover{color:var(--ink)}.to-mani:hover{opacity:1}}
+@media (max-height:700px) and (orientation:portrait){.p{font-size:15px;line-height:1.36}.view{padding-top:calc(70px + env(safe-area-inset-top,0px))}.p+.p{margin-top:.7em}.h{margin-bottom:14px}}
+/* one hover language everywhere: interactive things turn black */
+@media (hover:hover){
+  .mark:hover,.to-mani:hover,.burger:hover,.foot a:hover,.sdrop a:hover,.pager button:hover{color:#111}
+  .to-mani:hover{opacity:1}
+  .foot a,.sdrop a,.pager button,.mark,.burger{transition:color .2s,transform .3s cubic-bezier(.2,.75,.15,1)}
+  body.home:not(.menu-open) .hdot:hover,body.socials-open .hdot{background:#111}
+  .btn:hover,.btn:focus-visible{background:#111;border-color:#111;color:#fff}
+}
+.byname{position:fixed;left:0;right:0;bottom:0;margin:0;text-align:center;z-index:5;pointer-events:none;
+  padding:0 20px calc(22px + env(safe-area-inset-bottom,0px));font-weight:700;font-size:clamp(14px,1.6vw,18px);letter-spacing:.01em;color:var(--ink);
+  opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .5s cubic-bezier(.2,.75,.15,1)}
+.byname{opacity:1;transform:none;z-index:16}
+.byname a{pointer-events:auto;text-decoration:none;display:inline-block;padding:8px 10px;margin:-8px -10px;transition:color .2s,transform .3s cubic-bezier(.2,.75,.15,1)}
+@media (hover:hover){.byname a:hover{color:#111;transform:scale(1.15)}}
+@media (hover:hover){.foot a:hover,.foot a:focus-visible{transform:scale(1.5);color:#111}}
 </style>
 
-<nav aria-label="primary">
-  <div class="wrap">
-    <div class="l"><a href="#lines">notes</a><a href="#book">products</a></div>
-    <a class="name" href="#top">jo johnson</a>
-    <a class="navdot" href="#top" aria-label="Back to top" tabindex="-1"></a>
-    <div class="r"><a href="#newsletter">substack</a><a href="#work">contact</a></div>
+<header class="top">
+  <div class="left"><a class="mark" href="#home">The Relentless Pursuit</a><button class="hdot" type="button" id="hdot" aria-label="My links" aria-expanded="false" aria-controls="sdrop"></button><div class="sdrop" id="sdrop"><a href="https://josbjohnson.substack.com/subscribe" target="_blank" rel="noopener" aria-label="Substack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg><span>substack</span></a><a href="https://x.com/josbjohnson" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg><span>x</span></a><a href="https://www.instagram.com/josb_johnson/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg><span>instagram</span></a><a href="mailto:josiah@therelentlesspurs.com" aria-label="Email"><svg viewBox="0 0 24 24" aria-hidden="true" class="stroke"><rect x="2.5" y="5" width="19" height="14" rx="1.2"/><path d="M3 6l9 7 9-7"/></svg><span>email</span></a></div></div>
+  <button class="burger" type="button" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><i></i></button>
+</header>
+
+<nav class="menu" id="menu" aria-label="menu">
+  <div>
+    <ul>
+      <li><a href="#about">about me</a></li>
+      <li><a href="#notes">notes</a></li>
+      <li><a href="#coaching">one on one</a></li>
+      <li><a href="#book">products <span style="font-size:.42em;letter-spacing:0;vertical-align:.55em">(coming soon)</span></a></li>
+    </ul>
   </div>
 </nav>
 
-<header class="hero" id="top">
-  <div class="wrap">
-    <h1 class="huge">the relentless</h1>
-    <p class="script" aria-hidden="true">pursuit</p>
-    <span class="dot" aria-hidden="true"></span>
-    <p class="line">LIFE IS RELENTLESS.<br class="br-d"> YOU MUST<br class="br-m"> ANSWER IT BY BEING RELENTLESS.</p>
-    <nav class="socials" aria-label="links">
-      <a href="https://josbjohnson.substack.com/subscribe" target="_blank" rel="noopener" aria-label="Substack" title="substack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg></a>
-      <a href="https://x.com/josbjohnson" target="_blank" rel="noopener" aria-label="X" title="x"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
-      <a href="https://www.instagram.com/josb_johnson/" target="_blank" rel="noopener" aria-label="Instagram" title="instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
-      <a href="mailto:josiah@therelentlesspurs.com" aria-label="Email" title="email"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico-stroke"><rect x="2.5" y="5" width="19" height="14" rx="1.2"/><path d="M3 6l9 7 9-7"/></svg></a>
-    </nav>
-    <div class="credits">
-      <span class="cap">© jo johnson</span>
-    </div>
-  </div>
-</header>
-
-<section class="spread alt manifesto" id="manifesto">
-  <div class="wrap">
-    <div class="kicker"><span class="cap">the manifesto</span><span class="dot sm"></span></div>
-    <ol>
-      <li>attack your goals with ferocity</li>
-      <li>love deeply</li>
-      <li>play hard</li>
-      <li>be present</li>
-      <li>get uncomfortable</li>
-      <li>chase what pulls at you</li>
-      <li>take your shot</li>
-      <li>don’t waste this one precious, beautiful life</li>
-      <li class="end">pursue your life relentlessly</li>
-    </ol>
-  </div>
-</section>
-
-<section class="spread about" id="about">
-  <div class="wrap">
-    <div class="kicker"><span class="cap">about</span></div>
-    <div class="cols">
-      <p class="lead">I’m a former college athlete, runner, and writer with a deep fascination for what people are capable of becoming.</p>
-      <div class="body">
-        <p>I’ve spent a lot of my life drawn to the pursuit of something difficult. the kind of pursuit that demands more of you than you thought you had to give, and somehow makes you love being alive a little more.</p>
-        <p>I write about the things I find myself coming back to: belief, ambition, the human spirit, and the relentless pursuit of a life worth living.</p>
-        <p>mostly, I’m just trying to make the most of my time here, and hopefully encourage a few people to do the same.</p>
-        <div class="stats">
-          <div><b>60k</b><span class="cap">on x</span></div>
-          <div><b>1,000+</b><span class="cap">readers on substack</span></div>
-        </div>
-      </div>
+<!-- HOME -->
+<section class="view" id="v-home" aria-label="home">
+  <div class="inner">
+    <h1 class="big"><a class="to-mani" href="#manifesto">The Relentless<br> Pursuit</a></h1>
+    <p class="sub">Life is relentless.<br>You must answer it by being relentless.</p>
+    <div class="foot" aria-label="links">
+      <a href="https://josbjohnson.substack.com/subscribe" target="_blank" rel="noopener" aria-label="Substack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg></a>
+      <a href="https://x.com/josbjohnson" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+      <a href="https://www.instagram.com/josb_johnson/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
+      <a href="mailto:josiah@therelentlesspurs.com" aria-label="Email"><svg viewBox="0 0 24 24" aria-hidden="true" class="stroke"><rect x="2.5" y="5" width="19" height="14" rx="1.2"/><path d="M3 6l9 7 9-7"/></svg></a>
     </div>
   </div>
 </section>
 
-<section class="spread alt lines" id="lines">
-  <div class="wrap">
-    <article class="entry l-ital l-feature"><span class="cap note-label">notes</span><q>you must believe you are special and then go so hard, for so long, with such violent refusal to accept any other ending, that reality itself starts running out of ways to tell you no. you must wage a war daily against the ordinary outcome, until the belief you invented out of nothing in a room by yourself has been hammered into the world so many times that it stops being a claim and becomes reality.</q></article>
-    <article class="entry l-huge"><q>the one who refuses to stop eventually outruns the one who was born faster.</q></article>
-    <article class="entry l-stack"><q><span>make your life a testament to what you’re capable of.</span><span>relentlessly pursue your potential.</span><span class="end">die empty.</span></q></article>
-    <article class="entry l-litany"><q><span>relentlessly pursue your potential</span><span>relentlessly pursue your craft</span><span>relentlessly pursue your people</span><span>relentlessly pursue your health</span><span>relentlessly pursue your faith</span><span>relentlessly pursue your standard</span><span>relentlessly pursue your joy</span><span>relentlessly pursue your depth</span></q></article>
-    <article class="entry l-huge"><q>you must believe you are great before there is evidence</q>
-      <div class="more"><a class="btn" href="https://x.com/josbjohnson" target="_blank" rel="noopener">more on x · @josbjohnson</a></div>
-    </article>
+<p class="byname"><a href="#about" aria-label="About jo johnson">jo johnson</a></p>
+
+<!-- NOTES -->
+<section class="view" id="v-notes" aria-label="notes">
+  <div class="inner">
+    <div class="note" id="note"></div>
+    <div class="pager"><button type="button" id="prev" class="arrow" aria-label="Previous note">←</button><button type="button" id="next">next</button><button type="button" id="next2" class="arrow" aria-label="Next note">→</button></div><span id="count" hidden></span>
   </div>
 </section>
 
-<section class="spread work" id="work">
-  <div class="wrap">
-    <div class="kicker"><span class="cap">1:1 coaching</span><h2 class="h2">one on <span class="s">one</span></h2></div>
-    <div class="cols">
-      <div>
-        <p class="lead">I love talking about this stuff.</p>
-        <p>goals, faith, the life you’re trying to build. if you want an hour of my time to work through yours, email me.</p>
-      </div>
-      <div class="reach">
-        <span class="cap">spots are limited</span>
-        <p class="addr"><a id="email" href="mailto:josiah@therelentlesspurs.com">josiah@therelentlesspurs.com</a></p>
-        <div class="row"><a class="btn fill" href="mailto:josiah@therelentlesspurs.com?subject=1%3A1%20coaching">contact me</a><button id="copy-email" class="btn" type="button">copy email</button></div>
-      </div>
-    </div>
-    <script>
-      (function(){
-        var b=document.getElementById('copy-email'),a='josiah@therelentlesspurs.com';
-        function done(t){b.textContent=t;setTimeout(function(){b.textContent='copy email'},1800)}
-        b.addEventListener('click',function(){
-          var sel=function(){var r=document.createRange();r.selectNodeContents(document.getElementById('email'));var s=getSelection();s.removeAllRanges();s.addRange(r);done('selected, press copy')};
-          try{navigator.clipboard.writeText(a).then(function(){done('copied')},sel)}catch(e){sel()}
-        });
-      })();
-    </script>
-  </div>
-</section>
 
-<section class="spread alt letter" id="newsletter">
-  <div class="wrap">
-    <div class="kicker"><span class="cap">the newsletter</span><h2 class="h2">subscribe to my <span class="s">substack</span></h2></div>
-    <p class="intro">an extension of my x.</p>
-    <div class="more"><a class="btn fill" href="https://josbjohnson.substack.com/subscribe" target="_blank" rel="noopener">subscribe on substack</a></div>
-  </div>
-</section>
-
-<section class="spread book" id="book">
-  <div class="wrap">
-    <div class="cols">
-      <div class="cover" aria-label="book cover">
-        <span class="stamp" aria-hidden="true">coming soon</span>
-        <span class="cap">vol. i</span>
-        <div class="t">the relentless <span class="s">pursuit</span></div>
-        <div class="foot"><span class="dot sm" style="margin:0"></span><span class="cap" style="color:var(--ink)">jo johnson</span></div>
-      </div>
-      <div class="text">
-        <span class="cap">the book</span>
-        <p>the best pieces from the archive, each set as its own piece of typographic art. something to keep on the desk and open at random.</p>
-        <div class="soon">coming soon</div>
-        <a class="btn fill" href="https://tally.so/r/QoKp68" target="_blank" rel="noopener" style="margin-top:24px">notify me when it’s live</a>
-      </div>
+<!-- ABOUT -->
+<section class="view" id="v-about" aria-label="about">
+  <div class="inner">
+    <h2 class="h">About me</h2>
+    <p class="p">I’m a former college athlete, runner, and writer with a deep fascination for what people are capable of becoming.</p>
+    <p class="p">I’ve spent a lot of my life drawn to the pursuit of something difficult. the kind of pursuit that demands more of you than you thought you had to give, and somehow makes you love being alive a little more.</p>
+    <p class="p">I write about the things I find myself coming back to: belief, ambition, the human spirit, and the relentless pursuit of a life worth living.</p>
+    <p class="p">mostly, I’m just trying to make the most of my time here, and hopefully encourage a few people to do the same.</p>
+    <p class="p" style="font-weight:700;margin-top:1.1em">- jo johnson</p>
+    <div class="foot" aria-label="links">
+      <a href="https://josbjohnson.substack.com/subscribe" target="_blank" rel="noopener" aria-label="Substack"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg></a>
+      <a href="https://x.com/josbjohnson" target="_blank" rel="noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg></a>
+      <a href="https://www.instagram.com/josb_johnson/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.0301.084c-1.2768.0602-2.1487.264-2.911.5634-.7888.3075-1.4575.72-2.1228 1.3877-.6652.6677-1.075 1.3368-1.3802 2.127-.2954.7638-.4956 1.6365-.552 2.914-.0564 1.2775-.0689 1.6882-.0626 4.947.0062 3.2586.0206 3.6671.0825 4.9473.061 1.2765.264 2.1482.5635 2.9107.308.7889.72 1.4573 1.388 2.1228.6679.6655 1.3365 1.0743 2.1285 1.38.7632.295 1.6361.4961 2.9134.552 1.2773.056 1.6884.069 4.9462.0627 3.2578-.0062 3.668-.0207 4.9478-.0814 1.28-.0607 2.147-.2652 2.9098-.5633.7889-.3086 1.4578-.72 2.1228-1.3881.665-.6682 1.0745-1.3378 1.3795-2.1284.2957-.7632.4966-1.636.552-2.9124.056-1.2809.0692-1.6898.063-4.948-.0063-3.2583-.021-3.6668-.0817-4.9465-.0607-1.2797-.264-2.1487-.5633-2.9117-.3084-.7889-.72-1.4568-1.3876-2.1228C21.2982 1.33 20.628.9208 19.8378.6165 19.074.321 18.2017.1197 16.9244.0645 15.6471.0093 15.236-.005 11.977.0014 8.718.0076 8.31.0215 7.0301.0839m.1402 21.6932c-1.17-.0509-1.8053-.2453-2.2287-.408-.5606-.216-.96-.4771-1.3819-.895-.422-.4178-.6811-.8186-.9-1.378-.1644-.4234-.3624-1.058-.4171-2.228-.0595-1.2645-.072-1.6442-.079-4.848-.007-3.2037.0053-3.583.0607-4.848.05-1.169.2456-1.805.408-2.2282.216-.5613.4762-.96.895-1.3816.4188-.4217.8184-.6814 1.3783-.9003.423-.1651 1.0575-.3614 2.227-.4171 1.2655-.06 1.6447-.072 4.848-.079 3.2033-.007 3.5835.005 4.8495.0608 1.169.0508 1.8053.2445 2.228.408.5608.216.96.4754 1.3816.895.4217.4194.6816.8176.9005 1.3787.1653.4217.3617 1.056.4169 2.2263.0602 1.2655.0739 1.645.0796 4.848.0058 3.203-.0055 3.5834-.061 4.848-.051 1.17-.245 1.8055-.408 2.2294-.216.5604-.4763.96-.8954 1.3814-.419.4215-.8181.6811-1.3783.9-.4224.1649-1.0577.3617-2.2262.4174-1.2656.0595-1.6448.072-4.8493.079-3.2045.007-3.5825-.006-4.848-.0608M16.953 5.5864A1.44 1.44 0 1 0 18.39 4.144a1.44 1.44 0 0 0-1.437 1.4424M5.8385 12.012c.0067 3.4032 2.7706 6.1557 6.173 6.1493 3.4026-.0065 6.157-2.7701 6.1506-6.1733-.0065-3.4032-2.771-6.1565-6.174-6.1498-3.403.0067-6.156 2.771-6.1496 6.1738M8 12.0077a4 4 0 1 1 4.008 3.9921A3.9996 3.9996 0 0 1 8 12.0077"/></svg></a>
+      <a href="mailto:josiah@therelentlesspurs.com" aria-label="Email"><svg viewBox="0 0 24 24" aria-hidden="true" class="stroke"><rect x="2.5" y="5" width="19" height="14" rx="1.2"/><path d="M3 6l9 7 9-7"/></svg></a>
     </div>
   </div>
 </section>
 
-<footer>
-  <div class="wrap">
-    <p class="sign" aria-hidden="true">keep going</p>
-    <span class="dot sm" style="margin-top:20px" aria-hidden="true"></span>
-    <div class="foot">
-      <span class="cap">© 2026 jo johnson</span>
-      <span class="cap"><a href="https://x.com/josbjohnson" target="_blank" rel="noopener">x · @josbjohnson</a> &nbsp;·&nbsp; <a href="#newsletter">newsletter</a> &nbsp;·&nbsp; <a href="#top">top</a></span>
+<!-- 1:1 -->
+<section class="view" id="v-coaching" aria-label="one on one">
+  <div class="inner">
+    <h2 class="h">One on one</h2>
+    <p class="p">I love talking about this stuff. goals, faith, the life you’re trying to build. if you want an hour of my time to work through yours, email me. I have space for a few people who are ready and committed to living relentlessly.</p>
+    <div class="btns">
+      <a class="btn" href="mailto:josiah@therelentlesspurs.com?subject=1%3A1">Email me</a>
+      <button class="btn ghost" type="button" id="copy">Copy email</button>
     </div>
+    <p class="small" id="addr">josiah@therelentlesspurs.com · spots are limited</p>
   </div>
-</footer>
+</section>
+
+<!-- BOOK -->
+<section class="view" id="v-book" aria-label="products">
+  <div class="inner">
+    <h2 class="h">the relentless pursuit</h2>
+    <p class="p">a book. coming soon.</p>
+    <div class="btns"><a class="btn" href="https://tally.so/r/QoKp68" target="_blank" rel="noopener">Notify me</a></div>
+  </div>
+</section>
+
 
 <div id="cursor" aria-hidden="true"></div>
+
 <script>
 (function(){
-  var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* 2. reveal selected lines on scroll; anything already on screen stays visible */
-  if(!reduce&&'IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.remove('pending');io.unobserve(e.target)}})},{rootMargin:'0px 0px -12% 0px'});
-    document.querySelectorAll('.lines .entry').forEach(function(el){
-      if(el.getBoundingClientRect().top>innerHeight*0.9){el.classList.add('pending');io.observe(el)}
-    });
+  var pages=['home','notes','about','coaching','book'];
+  var burger=document.getElementById('burger');
+  function menu(open){document.body.classList.toggle('menu-open',open);burger.setAttribute('aria-expanded',open);burger.setAttribute('aria-label',open?'Close menu':'Open menu')}
+  burger.onclick=function(){menu(!document.body.classList.contains('menu-open'))};
+  document.getElementById('menu').addEventListener('click',function(e){if(e.target.closest('a'))return;menu(false);location.hash='#home'});
+  document.querySelectorAll('.menu a,.mark').forEach(function(a){a.addEventListener('click',function(){menu(false)})});
+  addEventListener('keydown',function(e){if(e.key==='Escape')menu(false)});
+  function show(e){
+    var id=(location.hash||'#home').slice(1);
+    if(id==='manifesto'){window.__from='home';if(window.__ready){n=0;draw()}id='notes'}
+    else if(id==='notes'){window.__from='menu';if(e&&window.__ready){n=0;draw()}}
+    if(pages.indexOf(id)<0)id='home';
+    pages.forEach(function(p){document.getElementById('v-'+p).classList.toggle('on',p===id)});
+    document.body.classList.toggle('home',id==='home');
   }
-  var nb=document.querySelector('nav[aria-label="primary"]');var setNav=function(){if(nb)document.documentElement.style.setProperty('--navh',nb.offsetHeight+'px')};setNav();addEventListener('resize',setNav);
-  /* the hero dot rises into the top bar once it scrolls out of view */
-  var bar=document.querySelector('nav[aria-label="primary"]'),hd=document.querySelector('.hero .dot');
-  if(bar&&hd){var nd=bar.querySelector('.navdot');
-    var upd=function(){var dotted=hd.getBoundingClientRect().bottom<bar.getBoundingClientRect().bottom;bar.classList.toggle('dotted',dotted);nd.tabIndex=dotted?0:-1};
-    addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();}
-  /* 6. red dot cursor */
+  addEventListener('hashchange',function(){menu(false)});
+  addEventListener('hashchange',show);
+  var hd=document.getElementById('hdot');
+  function socials(open){document.body.classList.toggle('socials-open',open);hd.setAttribute('aria-expanded',open)}
+  hd.addEventListener('click',function(e){e.stopPropagation();socials(!document.body.classList.contains('socials-open'))});
+  document.addEventListener('click',function(e){if(!e.target.closest('#sdrop'))socials(false)});
+  addEventListener('hashchange',function(){socials(false)});
+  burger.addEventListener('click',function(){socials(false)});
+  addEventListener('keydown',function(e){if(e.key==='Escape')socials(false)});
+  var mk=document.querySelector('.mark');
+  function mw(){document.documentElement.style.setProperty('--mw',mk.getBoundingClientRect().width+'px')}
+  mw();addEventListener('resize',mw);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(mw);
+
+  var NOTES=[
+ "<ol class=\"mani\"><li>attack your goals with ferocity</li> <li>love deeply</li> <li>play hard</li> <li>be present</li> <li>get uncomfortable</li> <li>chase what pulls at you</li> <li>take your shot</li> <li>don’t waste this one precious, beautiful life</li> <li class=\"end\">pursue your life relentlessly</li></ol>",
+ "<q class=\"long dense\">you must believe you are special and then go so hard, for so long, with such violent refusal to accept any other ending, that reality itself starts running out of ways to tell you no. you must wage a war daily against the ordinary outcome, until the belief you invented out of nothing in a room by yourself has been hammered into the world so many times that it stops being a claim and becomes reality.</q>",
+ "<q class=\"big-q\">the one who refuses to stop eventually outruns the one who was born faster.</q>",
+ "<q class=\"big-q stack\"><span>make your life a testament to what you’re capable of.</span><span>relentlessly pursue your potential.</span><span>die empty.</span></q>",
+ "<q class=\"long tight stack\"><span>relentlessly pursue your potential</span><span>relentlessly pursue your craft</span><span>relentlessly pursue your people</span><span>relentlessly pursue your health</span><span>relentlessly pursue your faith</span><span>relentlessly pursue your standard</span><span>relentlessly pursue your joy</span><span>relentlessly pursue your depth</span></q>",
+ "<q class=\"big-q\">you must believe you are great before there is evidence</q>",
+ "<q class=\"long\">the person who wins is simply the one who is most disgusted by the idea of staying the same - they have an insatiable hunger for growth.</q>",
+ "<q class=\"long\">eventually you have to stop asking whether you are capable and become curious about what happens if you straight up refuse to quit.</q>",
+ "<q class=\"long\">“I’m not smart enough” said while refusing to read. “I’m not lucky enough” said while refusing to move. the prophecy fulfills itself and you get to be the victim of a fate you are actively choosing.</q>",
+ "<q class=\"long stack\"><span>treat life like the gift it is.</span><span>there is no greater joy than chasing adventure, chasing a mission, and chasing your potential with every fiber of your being.</span><span>you owe it to yourself to be constantly exploring what it means to be human and to be truly alive</span></q>",
+ "<q class=\"big-q\">the ones who last treat repetition like art.</q>",
+ "<q class=\"long stack\"><span>“they got lucky”</span><span>they also got up earlier, stayed later, sacrificed more, complained less and literally never stopped.</span><span>but sure. luck.</span></q>",
+ "<q class=\"long dense stack\"><span>honestly, you just gotta be a dog. get after it every day, refuse to be refused, stay hungry when you’re winning and hungrier when you’re not. fight for it. claw for it. chew your way to it and don’t let go once you’ve got hold.</span><span>burn the boats. every person who ever did something enormous made retreat impossible first - cut off their own escape, stood on the shore and watched the way back go up in flames - and that terrifying finality is precisely what set them free to go all in. you can’t sprint at something while keeping one foot planted in the life you swore you would leave behind.</span><span>limitless belief. relentless pursuit. violent execution.</span></q>",
+ "<q class=\"long\">you’re checking for growth like a kid digging up a seed every three days to see if it’s doing anything. it was. you keep interrupting it. have some patience.</q>",
+ "<q class=\"big-q\">the fastest way to attract what you deserve is to become completely unavailable to what you don’t</q>",
+ "<q class=\"long\">more reps. more attempts. more volume. more output. more at bats. more swings. more mornings. more hours in the room. more shots. the people who win just do more. that’s the boring truth nobody wants to hear because it doesn’t fit in a framework or a four step system. just do more. do more than the person next to you. do more than you did yesterday. more more more.</q>",
+ "<q class=\"long\">I am relentless because the alternative disgusts me. settling, coasting, going soft in the body and lazy in the spirit and half present with the people I love - I’d rather bleed for the higher version every day than drift comfortably toward the smaller one.</q>",
+ "<q class=\"long\">apply pressure. wake up and apply it again on top of yesterday’s, and again on top of that, stacking effort on effort until the weight of all of it makes the outcome unavoidable. no let up anywhere in it. you go and you go and you go until it’s done, and then you find the next thing and you go.</q>",
+ "<q class=\"big-q\">run like you’re on fire toward everything you’ve ever wanted.</q>",
+ "<q class=\"long dense\">the size of your life is up to you. that thought should terrify you and thrill you in the same breath. everything you are not is a choice. every limit is self imposed. every ounce of potential you haven’t touched is sitting there waiting for a version of you willing to reach for it. you can have anything you are willing to work for. so go work. go take it. stop admiring the life from a distance and go grab it.</q>",
+ "<q class=\"big-q\">God would not plant a dream in a man incapable of reaching it.</q>",
+ "<q class=\"long\">you get one life. and you’re going to spend it being what - safe? liked? understood? go be the thing that sets your chest on fire and let the safe people watch from wherever safe people watch from.</q>",
+ "<q class=\"long\">there is no version of a meaningful life that doesn’t involve being misunderstood by people you respect. if everyone around you is comfortable with your direction you’re walking someone else’s path.</q>",
+ "<q class=\"long dense stack\"><span>begin.</span><span>begin badly. begin afraid. begin with the wrong tools and the wrong words and the wrong hour of the morning. begin anyway. because the carpenter’s hands were not ready when he built his first table - they were simply willing. and willingness, in the economy of a life, is worth more than talent and more than timing and more than any condition the mind invents to delay the moment when the body must finally do what it has always known it was built to do.</span><span>I will say it again, in case the first one was absorbed by the part of you that is already composing a reason to wait:</span><span>begin.</span><span>with the urgency your life deserves.</span></q>",
+ "<q class=\"long stack\"><span>you want something?</span><span>act like someone who already has it.</span><span>move with the certainty of inevitable success.</span><span>operate from the assumption that failure isn’t an option because you’ve already decided you’re not stopping until it’s yours.</span><span>go. get. It.</span></q>",
+ "<q class=\"long\">no one’s coming to validate your dream or approve your ambition or confirm that you’re allowed to want what you want. you give yourself permission by taking the first step and then the second and then refusing to stop until it’s real.</q>",
+ "<q class=\"long stack\"><span>the truth is you’re ordinary until you prove otherwise.</span><span>no one is coming to discover you. no one is waiting to be impressed.</span><span>you build the proof yourself or you remain what you are.</span></q>",
+ "<q class=\"long stack\"><span>you want to know the secret? there is no moment where you feel ready or receive a permission slip from the universe.</span><span>greatness is trespassing. doing the work you’re not qualified for, in rooms you don’t belong in, until reality rearranges itself around your audacity.</span></q>",
+ "<q class=\"long\">david without goliath is just a kid with a rock. the giant is what makes the story worth telling. you need something impossible to aim at, something that makes reasonable people tell you to quit, something that might destroy you in the attempting. most people spend their lives looking for smaller rocks instead of bigger giants.</q>",
+ "<q class=\"long stack\"><span>the reason you’re not where you want to be isn’t complicated.</span><span>you’re not putting in the hours. that’s it.</span><span>all the motivational videos you’re watching, all the strategy, all the vision boards, none of it replaces the raw volume of work you’re avoiding.</span></q>",
+ "<q class=\"long dense stack\"><span>master your craft so completely that it becomes your language. not the language you speak to impress others, but the language you think in. where the work isn’t separate from you, isn’t something you do, but something you are. where your hands know before your mind does. where you’ve repeated the fundamentals so many times they’ve dissolved into instinct.</span><span>it’s not just talent. it’s mind and body numbing devotion. it’s showing up when inspiration left. it’s the thousand hours nobody saw that make the one hour everybody wants.</span><span>excellence is a religion.</span><span>and the only prayer that matters is practice.</span></q>",
+ "<q class=\"long stack\"><span>the mission is simple: die empty.</span><span>use every gift, share every lesson, love every person you’re supposed to love.</span><span>don’t take your genius to the grave.</span></q>",
+ "<q class=\"long dense stack\"><span>you’ll get rejected and dumped and fired and you’ll fail at things you were sure about, that’s just the cost of being alive. the question isn’t whether it’ll happen but how quickly you can get yourself back to swinging at the next opportunity. every day you spend hostage to what already happened is a day you’re not creating what’s next. reset fast.</span><span>you’re still in the game as long as your heart is beating and there is air in your lungs. keep going.</span></q>"
+];
+  var n=0,box=document.getElementById('note'),cnt=document.getElementById('count');
+  function draw(){box.innerHTML='<div class="fade">'+NOTES[n]+'</div>';cnt.textContent=(n+1)+' / '+NOTES.length}
+  function go(d){n=(n+d+NOTES.length)%NOTES.length;draw()}
+  document.getElementById('prev').onclick=function(){go(-1)};
+  document.getElementById('next').onclick=function(){go(1)};
+  document.getElementById('next2').onclick=function(){go(1)};
+  addEventListener('keydown',function(e){if(location.hash!=='#notes'&&location.hash!=='#manifesto')return;if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});
+  var sx=null;box.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
+  box.addEventListener('touchend',function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>40)go(dx<0?1:-1);sx=null});
+  draw();window.__ready=true;
+
+  var cp=document.getElementById('copy'),addr='josiah@therelentlesspurs.com';
+  cp.onclick=function(){
+    var done=function(t){cp.textContent=t;setTimeout(function(){cp.textContent='Copy email'},1800)};
+    var sel=function(){var r=document.createRange();r.selectNodeContents(document.getElementById('addr'));var s=getSelection();s.removeAllRanges();s.addRange(r);done('Selected')};
+    try{navigator.clipboard.writeText(addr).then(function(){done('Copied')},sel)}catch(e){sel()}
+  };
+
+  /* on inner pages, tapping the writing itself opens the menu */
+  ['notes','about','coaching','book'].forEach(function(p){
+    var v=document.getElementById('v-'+p);
+    v.addEventListener('click',function(e){
+      if(e.target.closest('a,button'))return;
+      if(p==='notes'&&window.__from==='home'){location.hash='#home';return}
+      menu(true);
+    });
+  });
+  show();
+
   if(!(window.matchMedia&&matchMedia('(hover: hover) and (pointer: fine)').matches))return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var c=document.getElementById('cursor'),x=-100,y=-100,cx=-100,cy=-100;
   document.documentElement.classList.add('has-cursor');
-  addEventListener('mousemove',function(e){x=e.clientX;y=e.clientY;c.classList.add('on');
-    c.classList.toggle('big',!!(e.target.closest&&e.target.closest('a,button,input,select,textarea,label')))});
+  addEventListener('mousemove',function(e){x=e.clientX;y=e.clientY;c.classList.add('on');c.classList.toggle('big',!!(e.target.closest&&e.target.closest('a,button,body:not(.home) .view.on .inner')))});
   document.addEventListener('mouseleave',function(){c.classList.remove('on')});
   (function tick(){cx+=(x-cx)*(reduce?1:.28);cy+=(y-cy)*(reduce?1:.28);c.style.transform='translate('+cx+'px,'+cy+'px)';requestAnimationFrame(tick)})();
 })();
 </script>
-
 
 </body>
 </html>
