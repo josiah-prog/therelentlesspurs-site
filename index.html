@@ -66,7 +66,7 @@ body.home:not(.menu-open) .hdot:hover,body.socials-open .hdot{transform:scale(1.
   opacity:0;transform:translateY(-10px);pointer-events:none;transition:opacity .25s ease,transform .35s cubic-bezier(.2,.75,.15,1)}
 .sdrop svg{width:18px;height:18px;fill:currentColor;flex:none}
 .sdrop svg.stroke{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;width:20px;height:20px;margin-left:-1px}
-.sdrop a:hover span{text-decoration:underline;text-underline-offset:3px}
+@media (hover:hover){.sdrop a:hover span{text-decoration:underline;text-underline-offset:3px}}
 body.socials-open .sdrop a{opacity:1;transform:none;pointer-events:auto}
 body.socials-open .sdrop a:nth-child(2){transition-delay:.05s}body.socials-open .sdrop a:nth-child(3){transition-delay:.1s}body.socials-open .sdrop a:nth-child(4){transition-delay:.15s}
 
@@ -219,6 +219,10 @@ body:not(.home) .view{cursor:pointer}
 .byname a{pointer-events:auto;text-decoration:none;display:inline-block;padding:8px 10px;margin:-8px -10px;transition:color .2s,transform .3s cubic-bezier(.2,.75,.15,1)}
 @media (hover:hover){.byname a:hover{color:#111;transform:scale(1.15)}}
 @media (hover:hover){.foot a:hover,.foot a:focus-visible{transform:scale(1.5);color:#111}}
+/* socials dropdown: sits above everything, and the home content steps back while it is open */
+.sdrop{z-index:30}
+#v-home .inner{transition:opacity .3s ease}
+body.socials-open #v-home .inner,body.socials-open .byname{opacity:.08}
 </style>
 
 <header class="top">
