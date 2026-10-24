@@ -223,6 +223,20 @@ body:not(.home) .view{cursor:pointer}
 .sdrop{z-index:30}
 #v-home .inner{transition:opacity .3s ease}
 body.socials-open #v-home .inner,body.socials-open .byname{opacity:.08}
+/* about me: size the page by screen height too, so it always fits above the signature */
+#v-about .h{font-size:clamp(40px,min(8vw,10.5vh),104px);margin-bottom:clamp(10px,2.2vh,28px)}
+#v-about .p{font-size:clamp(14px,min(1.9vw,2.5vh),22px);line-height:1.4;max-width:40ch}
+#v-about .p+.p{margin-top:.75em}
+#v-about .foot{margin-top:clamp(12px,2.6vh,32px)}
+/* short phone screens (e.g. iPhone SE with Safari bars): tighter frame and height-aware note text */
+@media (max-height:600px) and (orientation:portrait){
+  .view{padding-top:calc(58px + env(safe-area-inset-top,0px));padding-bottom:calc(58px + env(safe-area-inset-bottom,0px))}
+  .byname{padding-bottom:calc(14px + env(safe-area-inset-bottom,0px))}
+  .note .long{font-size:min(4.8vw,3.4vh)}
+  .note .long.dense{font-size:min(3.9vw,2.55vh);line-height:1.42}
+  .pager{margin-top:10px}
+  #v-about .p{font-size:min(3.9vw,2.6vh)}
+}
 </style>
 
 <header class="top">
